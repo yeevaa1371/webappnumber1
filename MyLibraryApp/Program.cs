@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using MyLibraryApp.Contexts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<MyLibraryContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"));
+    //options.UseLazyLoadingProxies();
+});
+
 
 var app = builder.Build();
 
