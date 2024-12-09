@@ -11,8 +11,8 @@ using MyLibraryApp.Contexts;
 namespace MyLibraryApp.Migrations
 {
     [DbContext(typeof(MyLibraryContext))]
-    [Migration("20241207222654_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241209143050_UpdateDB")]
+    partial class UpdateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,9 +22,9 @@ namespace MyLibraryApp.Migrations
 
             modelBuilder.Entity("MyLibraryApp.Shared.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -48,18 +48,18 @@ namespace MyLibraryApp.Migrations
 
             modelBuilder.Entity("MyLibraryApp.Shared.Loan", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("BookId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LoanDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ReaderId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ReaderId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("TEXT");
@@ -75,9 +75,9 @@ namespace MyLibraryApp.Migrations
 
             modelBuilder.Entity("MyLibraryApp.Shared.Reader", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
                         .IsRequired()

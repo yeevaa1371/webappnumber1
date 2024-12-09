@@ -18,11 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <ProjectReference Include="..\MyLibraryApp.Shared\MyLibraryApp.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MyLibraryApp.Shared\MyLibraryApp.Shared.csproj" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

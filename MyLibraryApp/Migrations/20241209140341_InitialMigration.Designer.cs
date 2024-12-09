@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLibraryApp.Contexts;
 
@@ -10,9 +11,11 @@ using MyLibraryApp.Contexts;
 namespace MyLibraryApp.Migrations
 {
     [DbContext(typeof(MyLibraryContext))]
-    partial class MyLibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20241209140341_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -95,13 +98,13 @@ namespace MyLibraryApp.Migrations
             modelBuilder.Entity("MyLibraryApp.Shared.Loan", b =>
                 {
                     b.HasOne("MyLibraryApp.Shared.Book", "Book")
-                        .WithMany()
+                        .WithMany("Loans")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyLibraryApp.Shared.Reader", "Reader")
-                        .WithMany()
+                        .WithMany("Loans")
                         .HasForeignKey("ReaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -109,6 +112,16 @@ namespace MyLibraryApp.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Reader");
+                });
+
+            modelBuilder.Entity("MyLibraryApp.Shared.Book", b =>
+                {
+                    b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("MyLibraryApp.Shared.Reader", b =>
+                {
+                    b.Navigation("Loans");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,15 +4,16 @@ namespace MyLibraryApp.Shared;
 
 public class Loan
 {
-    public int Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
     [Required]
-    public int ReaderId { get; set; }
+    public Guid ReaderId { get; set; }
 
     public Reader Reader { get; set; }
 
     [Required]
-    public int BookId { get; set; }
+    public Guid BookId { get; set; }
 
     public Book Book { get; set; }
 
@@ -29,10 +30,11 @@ public class Loan
     // LoanDate validáció
     public static ValidationResult? ValidateLoanDate(DateTime date, ValidationContext context)
     {
-        return date >= DateTime.Now
+        return date.Date >= DateTime.Today
             ? ValidationResult.Success
             : new ValidationResult("Loan date cannot be in the past.");
     }
+
 
     // ReturnDate validáció
     public static ValidationResult? ValidateReturnDate(DateTime returnDate, ValidationContext context)

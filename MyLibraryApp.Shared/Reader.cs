@@ -5,7 +5,8 @@ namespace MyLibraryApp.Shared;
 
 public class Reader
 {
-    public int Id { get; set; } // Reader number
+    [Key]
+    public Guid Id { get; set; } // Reader number
     [Required(ErrorMessage = "Name is required.")]
     [NoWhitespace(ErrorMessage = "Name cannot be empty or contain only whitespace.")]
     public string Name { get; set; } = string.Empty;
@@ -17,5 +18,6 @@ public class Reader
     [Required(ErrorMessage = "Birth Date is required.")]
     [Range(1900, int.MaxValue, ErrorMessage = "Birth year must be after 1900.")]
     public DateTime BirthDate { get; set; }
+    
     
 }

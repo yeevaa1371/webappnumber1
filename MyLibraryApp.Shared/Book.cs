@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using MyLibraryApp.Shared.Attributes;
 
 namespace MyLibraryApp.Shared;
 
 public class Book
 {
-    public int Id { get; set; } // Inventory number
+    [Key]
+    public Guid Id { get; set; } // Inventory number
     
     [Required(ErrorMessage = "Title is required.")]
     [NoWhitespace(ErrorMessage = "Title cannot be empty or contain only whitespace.")]
@@ -23,4 +25,6 @@ public class Book
     [NoWhitespace(ErrorMessage = "The publication year cannot be empty or contain only whitespace.")]
     [Range(0, int.MaxValue, ErrorMessage = "Year of publication cannot be negative.")]
     public int PublicationYear { get; set; }
+    
+    
 }
