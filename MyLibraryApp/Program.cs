@@ -1,8 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using MyLibraryApp.Contexts;
 using MyLibraryApp.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+/*builder.Services.AddSerilog(
+    options =>
+        options
+            .MinimumLevel.Information()
+            .WriteTo.Console()
+            .WriteTo.File("log.txt"));*/
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -25,6 +33,8 @@ builder.Services.AddDbContext<MyLibraryContext>(options =>
 });
 
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IReaderService, ReaderService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 var app = builder.Build();
 

@@ -16,8 +16,8 @@ public class Reader
     public string Address { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "Birth Date is required.")]
-    [Range(1900, int.MaxValue, ErrorMessage = "Birth year must be after 1900.")]
-    public DateTime BirthDate { get; set; }
+    [Range(typeof(DateOnly), "1990-01-01", "2007-01-01")]
+    public DateOnly BirthDate { get; set; }
     
     
 }
