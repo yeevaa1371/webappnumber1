@@ -44,9 +44,9 @@ public class LoanController : ControllerBase
     public async Task<ActionResult<List<LoanWithDetails>>> Get()
     {
         var loans = await _loanService.GetAllAsync();
-        var loansWD = new List<LoanWithDetails>();
+        var loanswd = new List<LoanWithDetails>();
         
-        if (loans == null || loans.Count == 0)
+        if (loans.Count == 0)
         {
             return NotFound("No loans found for the specified reader.");
         }
@@ -56,7 +56,7 @@ public class LoanController : ControllerBase
             var book = await _bookService.GetAsync(loan.BookId);
             var reader = await _readerService.GetAsync(loan.ReaderId);
 
-            loansWD.Add(new LoanWithDetails()
+            loanswd.Add(new LoanWithDetails()
             {
                 LoanId = loan.Id,
                 ReaderId = loan.ReaderId,
@@ -68,16 +68,16 @@ public class LoanController : ControllerBase
             });
         }
         
-        return Ok(loansWD);
+        return Ok(loanswd);
     }
     
     [HttpGet("reader/{readerId:guid}")]
     public async Task<ActionResult<List<LoanWithDetails>>> GetLoansByReader(Guid readerId)
     {
         var loans = await _loanService.GetLoansByReaderAsync(readerId);
-        var loansWD = new List<LoanWithDetails>();
+        var loanswd = new List<LoanWithDetails>();
         
-        if (loans == null || loans.Count == 0)
+        if (loans.Count == 0)
         {
             return NotFound("No loans found for the specified reader.");
         }
@@ -87,7 +87,7 @@ public class LoanController : ControllerBase
             var book = await _bookService.GetAsync(loan.BookId);
             var reader = await _readerService.GetAsync(loan.ReaderId);
 
-                loansWD.Add(new LoanWithDetails()
+            loanswd.Add(new LoanWithDetails()
                 {
                     LoanId = loan.Id,
                     ReaderId = loan.ReaderId,
@@ -99,7 +99,7 @@ public class LoanController : ControllerBase
                 });
         }
         
-        return Ok(loansWD);
+        return Ok(loanswd);
     }
     
 }
