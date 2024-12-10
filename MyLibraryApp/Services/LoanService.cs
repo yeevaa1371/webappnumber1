@@ -33,23 +33,12 @@ public class LoanService : ILoanService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Loan?> GetAsync(Guid id)
-    {
-        return await _context.Loans
-            .FirstOrDefaultAsync(l => l.Id == id);
-    }
-
     public async Task<List<Loan>> GetAllAsync()
     {
+        
         _logger.LogInformation("Retrieving all loans.");
         return await _context.Loans
             .ToListAsync();
-    }
-
-    public async Task<Loan?> GetActiveLoanAsync(Guid readerId, Guid bookId)
-    {
-        return await _context.Loans
-            .FirstOrDefaultAsync(l => l.ReaderId == readerId && l.BookId == bookId && l.ReturnDate > DateTime.Now);
     }
 
     public async Task<List<Loan>> GetLoansByReaderAsync(Guid readerId)
