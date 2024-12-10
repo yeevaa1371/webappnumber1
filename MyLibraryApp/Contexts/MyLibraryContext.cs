@@ -17,18 +17,18 @@ public class MyLibraryContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Kapcsolat a Loan és Reader között
+        // Kapcsolat a Loan és Reader között, csak az ID-kat használva
         modelBuilder.Entity<Loan>()
-            .HasOne(l => l.Reader)  // Loan entitásnak van egy Reader kapcsolat
-            .WithMany() 
-            .HasForeignKey(l => l.ReaderId)  // ReaderId a foreignkey
+            .HasOne<Reader>()  // Loan entitásnak van egy Reader kapcsolata
+            .WithMany()  // Nem szükséges visszafelé kapcsolat, ha nincs másik kapcsolat
+            .HasForeignKey(l => l.ReaderId)  // ReaderId a foreign key
             .OnDelete(DeleteBehavior.Cascade);  // A törlésnél cascade alkalmazása
 
-        // Kapcsolat a Loan és Book között
+        // Kapcsolat a Loan és Book között, csak az ID-kat használva
         modelBuilder.Entity<Loan>()
-            .HasOne(l => l.Book)  // Loan entitásnak van egy Book kapcsolat
-            .WithMany()  
-            .HasForeignKey(l => l.BookId)  // BookId a foreignkey
+            .HasOne<Book>()  // Loan entitásnak van egy Book kapcsolata
+            .WithMany()  // Nem szükséges visszafelé kapcsolat
+            .HasForeignKey(l => l.BookId)  // BookId a foreign key
             .OnDelete(DeleteBehavior.Cascade);  // A törlésnél cascade alkalmazása
     }
 

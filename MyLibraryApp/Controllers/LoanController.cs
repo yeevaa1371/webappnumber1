@@ -24,10 +24,15 @@ public class LoanController : ControllerBase
     {
         var existingReader = await _readerService.GetAsync(loan.ReaderId);
         var existingBook = await _bookService.GetAsync(loan.BookId);
-
-        if (existingReader == null || existingBook == null)
+        
+        if (existingReader == null)
         {
-            return NotFound();
+            return NotFound($"Reader with ID {loan.ReaderId} not found.");
+        }
+
+        if (existingBook == null)
+        {
+            return NotFound($"Book with ID {loan.BookId} not found.");
         }
         
         var existingLoan = await _loanService.GetActiveLoanAsync(loan.ReaderId, loan.BookId);
@@ -47,7 +52,7 @@ public class LoanController : ControllerBase
         return Ok(await _loanService.GetAllAsync());
     }
     
-    [HttpGet("reader/{readerId:int}")]
+    [HttpGet("reader/{readerId:guid}")]
     public async Task<ActionResult<List<Loan>>> GetLoansByReader(Guid readerId)
     {
         var loans = await _loanService.GetLoansByReaderAsync(readerId);

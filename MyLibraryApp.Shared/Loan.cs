@@ -10,12 +10,8 @@ public class Loan
     [Required]
     public Guid ReaderId { get; set; }
 
-    public Reader Reader { get; set; }
-
     [Required]
     public Guid BookId { get; set; }
-
-    public Book Book { get; set; }
 
     [Required]
     [DataType(DataType.Date)]

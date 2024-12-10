@@ -11,8 +11,8 @@ using MyLibraryApp.Contexts;
 namespace MyLibraryApp.Migrations
 {
     [DbContext(typeof(MyLibraryContext))]
-    [Migration("20241210181902_UpdateDB2")]
-    partial class UpdateDB2
+    [Migration("20241210195408_InitialMigrationN")]
+    partial class InitialMigrationN
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,21 +97,17 @@ namespace MyLibraryApp.Migrations
 
             modelBuilder.Entity("MyLibraryApp.Shared.Loan", b =>
                 {
-                    b.HasOne("MyLibraryApp.Shared.Book", "Book")
+                    b.HasOne("MyLibraryApp.Shared.Book", null)
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyLibraryApp.Shared.Reader", "Reader")
+                    b.HasOne("MyLibraryApp.Shared.Reader", null)
                         .WithMany()
                         .HasForeignKey("ReaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Reader");
                 });
 #pragma warning restore 612, 618
         }
