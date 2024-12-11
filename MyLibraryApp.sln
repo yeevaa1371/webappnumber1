@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibraryApp", "MyLibraryAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibraryApp.Shared", "MyLibraryApp.Shared\MyLibraryApp.Shared.csproj", "{FBCF553B-0D4B-4B2D-88B5-0AF36F42517D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibraryApp.UIf", "MyLibraryApp.UIf\MyLibraryApp.UIf.csproj", "{FDEC9D79-7B0B-4B5E-AD1C-FF34881622AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibraryApp.UIf", "MyLibraryApp.UIf\MyLibraryApp.UIf.csproj", "{A9F8CD81-1460-46F5-83C3-14DD71B65FCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +20,9 @@ Global
 		{FBCF553B-0D4B-4B2D-88B5-0AF36F42517D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBCF553B-0D4B-4B2D-88B5-0AF36F42517D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBCF553B-0D4B-4B2D-88B5-0AF36F42517D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDEC9D79-7B0B-4B5E-AD1C-FF34881622AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDEC9D79-7B0B-4B5E-AD1C-FF34881622AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDEC9D79-7B0B-4B5E-AD1C-FF34881622AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDEC9D79-7B0B-4B5E-AD1C-FF34881622AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F8CD81-1460-46F5-83C3-14DD71B65FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F8CD81-1460-46F5-83C3-14DD71B65FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F8CD81-1460-46F5-83C3-14DD71B65FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F8CD81-1460-46F5-83C3-14DD71B65FCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
