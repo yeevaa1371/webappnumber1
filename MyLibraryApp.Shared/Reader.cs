@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using MyLibraryApp.Shared.Attributes;
 
 namespace MyLibraryApp.Shared;
@@ -6,7 +7,9 @@ namespace MyLibraryApp.Shared;
 public class Reader
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; } // Reader number
+    
     [Required(ErrorMessage = "Name is required.")]
     [NoWhitespace(ErrorMessage = "Name cannot be empty or contain only whitespace.")]
     public string Name { get; set; } = string.Empty;

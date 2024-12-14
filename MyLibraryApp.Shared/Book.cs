@@ -7,6 +7,7 @@ namespace MyLibraryApp.Shared;
 public class Book
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; } // Inventory number
     
     [Required(ErrorMessage = "Title is required.")]

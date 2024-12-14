@@ -1,6 +1,42 @@
 @page "/ReadersList"
-<h3>ReadersList</h3>
+@using MyLibraryApp.Shared
+@using MyLibraryApp.UIf.Services
+@inject IReaderService ReaderService
+
+@if (_readers is not null)
+{
+    <h3>Readers</h3>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>Olvasószám</td>
+            <td>Név</td>
+            <td>Lakcím</td>
+            <td>Születési idő</td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var reader in _readers)
+        {
+            <tr>
+                <td>@reader.Id</td>
+                <td>@reader.Name</td>
+                <td>@reader.Address</td>
+                <td>@reader.BirthDate</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+
 
 @code {
-    
+    private List<Reader> _readers;
+    protected override async Task OnInitializedAsync()
+    {
+        _readers = await ReaderService.GetAllAsync();
+    }
+
 }
