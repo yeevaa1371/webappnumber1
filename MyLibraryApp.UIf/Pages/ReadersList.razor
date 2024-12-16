@@ -3,9 +3,15 @@
 @using MyLibraryApp.UIf.Services
 @inject IReaderService ReaderService
 
+<div>
+    <h3>Readers</h3>
+    <a href="" class="btn btn-light">
+        <i class="bi bi-person-plus"></i> Új olvasó hozzáadása
+    </a>
+</div>
+
 @if (_readers is not null)
 {
-    <h3>Readers</h3>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -13,6 +19,7 @@
             <td>Név</td>
             <td>Lakcím</td>
             <td>Születési idő</td>
+            <td>Műveletek</td>
         </tr>
         </thead>
         <tbody>
@@ -23,6 +30,14 @@
                 <td>@reader.Name</td>
                 <td>@reader.Address</td>
                 <td>@reader.BirthDate</td>
+                <td>
+                    <a href="" class="btn btn-light" data-bs-toggle="tooltip" title="Szerkesztés">
+                        <i class="bi bi-person-gear"></i>
+                    </a>
+                    <a href="" class="btn btn-danger" data-bs-toggle="tooltip" title="Törlés">
+                        <i class="bi bi-person-dash"></i>
+                    </a>
+                </td>
             </tr>
         }
         </tbody>

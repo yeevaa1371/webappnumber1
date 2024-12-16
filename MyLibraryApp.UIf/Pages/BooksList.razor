@@ -3,9 +3,15 @@
 @using MyLibraryApp.UIf.Services
 @inject IBookService BookService
 
+<div>
+    <h3>Books</h3>
+    <a href="" class="btn btn-light">
+        <i class="bi bi-plus"></i> Új könyv hozzáadása
+    </a>
+</div>
+
 @if (_books is not null)
 {
-    <h3>Books</h3>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -14,6 +20,8 @@
             <td>Író</td>
             <td>Kiadó</td>
             <td>Kiadás éve</td>
+            <td>Műveletek</td>
+            
         </tr>
         </thead>
         <tbody>
@@ -25,6 +33,17 @@
                 <td>@book.Author</td>
                 <td>@book.Publisher</td>
                 <td>@book.PublicationYear</td>
+                <td>
+                    <a href="" class="btn btn-light" data-bs-toggle="tooltip" title="Szerkesztés">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="" class="btn btn-danger" data-bs-toggle="tooltip" title="Törlés">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    <a href="" class="btn btn-light" data-bs-toggle="tooltip" title="Kölcsönzés">
+                        <i class="bi bi-inbox"></i>
+                    </a>
+                </td>
             </tr>
         }
         </tbody>
