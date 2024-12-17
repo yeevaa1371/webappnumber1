@@ -1,13 +1,14 @@
 @page "/ReadersList"
 @using MyLibraryApp.Shared
 @using MyLibraryApp.UIf.Services
+@using MyLibraryApp.UIf.Components
 @inject IReaderService ReaderService
 
 <div>
     <h3>Readers</h3>
-    <a href="" class="btn btn-light">
+    <button type="button" class="btn btn-light" @onclick="() => OpenReaderForm()">
         <i class="bi bi-person-plus"></i> Új olvasó hozzáadása
-    </a>
+    </button>
 </div>
 
 @if (_readers is not null)
@@ -31,12 +32,12 @@
                 <td>@reader.Address</td>
                 <td>@reader.BirthDate</td>
                 <td>
-                    <a href="" class="btn btn-light" data-bs-toggle="tooltip" title="Szerkesztés">
+                    <button type="button" class="btn btn-light" @onclick="() => OpenReaderForm(reader)" data-bs-toggle="tooltip" title="Szerkesztés">
                         <i class="bi bi-person-gear"></i>
-                    </a>
-                    <a href="" class="btn btn-danger" data-bs-toggle="tooltip" title="Törlés">
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="() => OpenDeleteDialog(reader.Id)" data-bs-toggle="tooltip" title="Törlés">
                         <i class="bi bi-person-dash"></i>
-                    </a>
+                    </button>
                 </td>
             </tr>
         }
@@ -44,14 +45,91 @@
     </table>
 }
 
+@if (_showReaderForm)
+{
+    <ReaderForm Reader="_selectedReader" 
+                OnSubmit="@(_selectedReader.Id == Guid.Empty ? AddReader : UpdateReader)" 
+                DialogTitle="@(_selectedReader.Id == Guid.Empty ? "Új olvaso hozzáadása" : "OLvasó szerkesztése")"
+                SubmitButtonText="@(_selectedReader.Id == Guid.Empty ? "Hozzáadás" : "Mentés")"
+                OnClose="CloseReaderForm"/>
+}
 
-
+@if (_deleteReader)
+{
+    <DeleteForm EntityId="_selectedId"
+                OnClose="CloseDeleteDialog"
+                OnDelete="DeleteReader"></DeleteForm>
+}
 
 @code {
     private List<Reader> _readers;
+    private Boolean _showReaderForm = false;
+    private Reader? _selectedReader;
+    private Boolean _deleteReader = false;
+    private Guid _selectedId;
+    
     protected override async Task OnInitializedAsync()
     {
         _readers = await ReaderService.GetAllAsync();
     }
 
+    private void OpenReaderForm(Reader? reader = null)
+    {
+        _selectedReader = reader ?? new Reader() { Id = Guid.Empty, BirthDate = new DateOnly(1990,1,1)};
+        _showReaderForm = true;
+    }
+
+    private async Task CloseReaderForm()
+    {
+        _selectedReader = null;
+        _showReaderForm = false;
+        _readers = await ReaderService.GetAllAsync();
+    }
+    
+    private async Task UpdateReader(Reader reader)
+    {
+        try
+        {
+            await ReaderService.UpdateAsync(reader);
+            await CloseReaderForm();
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Failed to update book: {e.Message}");
+        }
+    }
+
+    private async Task AddReader(Reader reader)
+    {
+        try
+        {
+            await ReaderService.AddAsync(reader);
+            await CloseReaderForm();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Failed to add new reader: {e.Message}");
+            throw;
+        }
+    }
+
+    private void OpenDeleteDialog(Guid id)
+    {
+        _deleteReader = true;
+        _selectedId = id;
+    }
+
+    private void CloseDeleteDialog()
+    {
+        _selectedId = Guid.Empty;
+        _deleteReader = false;
+    }
+
+    private async Task DeleteReader(Guid id)
+    {
+        await ReaderService.DeleteAsync(id);
+        _readers = await ReaderService.GetAllAsync();
+        CloseDeleteDialog();
+    }
 }

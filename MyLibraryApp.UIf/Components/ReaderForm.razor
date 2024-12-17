@@ -1,0 +1,57 @@
+@using MyLibraryApp.Shared
+@inherits ComponentBase
+
+<EditForm Model="Reader" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@DialogTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDialog"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Név:</label>
+                        <input type="text" id="name" class="form-control" @bind="Reader.Name" />
+                        <ValidationMessage For="() => Reader.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Lakcím:</label>
+                        <input type="text" id="address" class="form-control" @bind="Reader.Address" />
+                        <ValidationMessage For="() => Reader.Address" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthDate">Születési dátum</label>
+                        <input id="birthDate" type="date" class="form-control" @bind="Reader.BirthDate" />
+                        <ValidationMessage For="() => Reader.BirthDate" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseDialog">Mégse</button>
+                    <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code
+{
+    [Parameter] public Reader Reader { get; set; } = new Reader();
+    [Parameter] public EventCallback<Reader> OnSubmit { get; set; }
+    [Parameter] public string DialogTitle { get; set; } = "Olvasó szerkesztése";
+    [Parameter] public string SubmitButtonText { get; set; } = "Mentés";
+    [Parameter] public EventCallback OnClose { get; set; }
+    
+    private async Task OnValidSubmit()
+    {
+        await OnSubmit.InvokeAsync(Reader);
+    }
+    
+    private async Task CloseDialog()
+    {
+        await OnClose.InvokeAsync();
+    }
+    
+}

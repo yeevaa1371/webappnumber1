@@ -53,8 +53,8 @@
 
 @if (_showBookForm)
 {
-    Console.WriteLine("I1m alredy in the IF");
-    <BookForm Book="_selectedBook" OnSubmit="@(_selectedBook.Id == Guid.Empty ? AddBook : UpdateBook)" 
+    <BookForm Book="_selectedBook" 
+              OnSubmit="@(_selectedBook.Id == Guid.Empty ? AddBook : UpdateBook)" 
               DialogTitle="@(_selectedBook.Id == Guid.Empty ? "Új könyv hozzáadása" : "Könyv szerkesztése")" 
               SubmitButtonText="@(_selectedBook.Id == Guid.Empty ? "Hozzáadás" : "Mentés")" 
               OnClose="CloseBookForm" />
@@ -62,7 +62,9 @@
 
 @if (_deleteBook)
 {
-    <DeleteForm EntityId="_selectedId" OnClose="CloseDeleteDialog" OnDelete="DeleteBook"></DeleteForm>
+    <DeleteForm EntityId="_selectedId" 
+                OnClose="CloseDeleteDialog" 
+                OnDelete="DeleteBook"></DeleteForm>
 }
 
 @code {
@@ -79,7 +81,6 @@
 
     private void OpenBookForm(Book? book = null)
     {
-        Console.WriteLine("Try to open BookForm");
         _selectedBook = book ?? new Book() { Id = Guid.Empty };
         _showBookForm = true;
         //StateHasChanged();
@@ -118,7 +119,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Hiba történt: {ex.Message}");
+            Console.WriteLine($"Failed to add new book: {ex.Message}");
         }
     }
 
@@ -126,12 +127,10 @@
     {
         _deleteBook = true;
         _selectedId = id;
-        Console.WriteLine(id);
     }
 
     private async Task DeleteBook(Guid id)
     {
-        Console.WriteLine(id);
         await BookService.DeleteAsync(id);
         _books = await BookService.GetAllAsync();
         CloseDeleteDialog();
