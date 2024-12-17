@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\MyLibraryApp.Shared\MyLibraryApp.Shared.csproj" />
     </ItemGroup>
 

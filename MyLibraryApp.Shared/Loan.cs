@@ -9,10 +9,10 @@ public class Loan
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Reader is required")]
     public Guid ReaderId { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Book is required")]
     public Guid BookId { get; set; }
 
     [Required]

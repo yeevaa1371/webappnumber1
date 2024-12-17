@@ -1,0 +1,65 @@
+@using MyLibraryApp.Shared
+@inherits ComponentBase
+
+<EditForm Model="Book" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    
+    <div class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@DialogTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDialog"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Cím:</label>
+                        <input type="text" id="title" class="form-control" @bind="Book.Title" />
+                        <ValidationMessage For="() => Book.Title" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Szerző:</label>
+                        <input type="text" id="author" class="form-control" @bind="Book.Author" />
+                        <ValidationMessage For="() => Book.Author" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Kiadó:</label>
+                        <input type="text" id="publisher" class="form-control" @bind="Book.Publisher" />
+                        <ValidationMessage For="() => Book.Publisher" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Kiadási év:</label>
+                        <input type="number" id="year" class="form-control" @bind="Book.PublicationYear" />
+                        <ValidationMessage For="() => Book.PublicationYear" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseDialog">Mégse</button>
+                    <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code
+{
+    [Parameter] public Book Book { get; set; } = new Book();
+    [Parameter] public EventCallback<Book> OnSubmit { get; set; }
+    [Parameter] public string DialogTitle { get; set; } = "Könyv szerkesztése";
+    [Parameter] public string SubmitButtonText { get; set; } = "Mentés";
+    [Parameter] public EventCallback OnClose { get; set; }
+    
+    private async Task OnValidSubmit()
+    {
+        Console.WriteLine("Change");
+        await OnSubmit.InvokeAsync(Book);
+    }
+    
+    private async Task CloseDialog()
+    {
+        Console.WriteLine("NO CHANGE");
+        await OnClose.InvokeAsync();
+    }
+    
+}

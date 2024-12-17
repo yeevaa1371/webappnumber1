@@ -1,13 +1,14 @@
 @page "/"
 @using MyLibraryApp.Shared
 @using MyLibraryApp.UIf.Services
+@using MyLibraryApp.UIf.Components
 @inject IBookService BookService
 
 <div>
     <h3>Books</h3>
-    <a href="" class="btn btn-light">
+    <button type="button" class="btn btn-light" @onclick="() => OpenBookForm()">
         <i class="bi bi-plus"></i> Új könyv hozzáadása
-    </a>
+    </button>
 </div>
 
 @if (_books is not null)
@@ -34,15 +35,15 @@
                 <td>@book.Publisher</td>
                 <td>@book.PublicationYear</td>
                 <td>
-                    <a href="" class="btn btn-light" data-bs-toggle="tooltip" title="Szerkesztés">
+                    <button type="button" class="btn btn-light" @onclick="() => OpenBookForm(book)" data-bs-toggle="tooltip" title="Szerkesztés">
                         <i class="bi bi-pencil"></i>
-                    </a>
-                    <a href="" class="btn btn-danger" data-bs-toggle="tooltip" title="Törlés">
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="() => OpenBookForm(book)" data-bs-toggle="tooltip" title="Törlés">
                         <i class="bi bi-trash"></i>
-                    </a>
-                    <a href="" class="btn btn-light" data-bs-toggle="tooltip" title="Kölcsönzés">
+                    </button>
+                    <button type="button" class="btn btn-light" @onclick="() => OpenBookForm(book)" data-bs-toggle="tooltip" title="Kölcsönzés">
                         <i class="bi bi-inbox"></i>
-                    </a>
+                    </button>
                 </td>
             </tr>
         }
@@ -50,11 +51,70 @@
     </table>
 }
 
+@if (_showBookForm)
+{
+    Console.WriteLine("I1m alredy in the IF");
+    <BookForm Book="_selectedBook" OnSubmit="@(_selectedBook.Id == Guid.Empty ? AddBook : UpdateBook)" 
+              DialogTitle="@(_selectedBook.Id == Guid.Empty ? "Új könyv hozzáadása" : "Könyv szerkesztése")" 
+              SubmitButtonText="@(_selectedBook.Id == Guid.Empty ? "Hozzáadás" : "Mentés")" 
+              OnClose="CloseBookForm" />
+}
+
 @code {
     private List<Book> _books;
+    private Boolean _showBookForm = false;
+    private Book? _selectedBook;
     protected override async Task OnInitializedAsync()
     {
         _books = await BookService.GetAllAsync();
     }
-    
+
+    private void OpenBookForm(Book? book = null)
+    {
+        Console.WriteLine("Try to open BookForm");
+        _selectedBook = book ?? new Book() {Id = Guid.Empty};
+        _showBookForm = true;
+        //StateHasChanged();
+        /*Console.WriteLine(_selectedBook.Publisher + _selectedBook.Id + _showBookForm);*/
+    }
+
+    private async Task CloseBookForm()
+    {
+        _books = await BookService.GetAllAsync();
+        _showBookForm = false;
+        _selectedBook = null;
+        //StateHasChanged();
+    }
+
+    private async Task UpdateBook(Book book)
+    {
+        Console.WriteLine("UPDATE");
+        try
+        {
+            Console.WriteLine("EN VOLTAM");
+            await BookService.UpdateAsync(book);
+            StateHasChanged();
+            await CloseBookForm();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to update book: {ex.Message}");
+        }
+    }
+
+    private async Task AddBook(Book book)
+    {
+        Console.WriteLine("ADD");
+        try
+        {
+            Console.WriteLine("EN VOLTAM2");
+            await BookService.AddAsync(book);
+            StateHasChanged();
+            await CloseBookForm();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Hiba történt: {ex.Message}");
+        }
+    }
 }

@@ -4,6 +4,11 @@
 @inject ILoanService LoanService
 
 <h3>Loans</h3>
+<div>
+    <a href="" class="btn btn-light">
+        <i class="bi bi-inbox"></i> Kölcsönzés
+    </a>
+</div>
 <div class="mb-3 loans-search">
     <input type="text" class="form-control" @bind="SearchTerm" @bind:event="oninput" placeholder="Keresés név vagy olvasószám alapján..." />
 </div>
