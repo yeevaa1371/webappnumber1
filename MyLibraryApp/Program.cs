@@ -5,12 +5,12 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*builder.Services.AddSerilog(
+builder.Services.AddSerilog(
     options =>
         options
             .MinimumLevel.Information()
             .WriteTo.Console()
-            .WriteTo.File("log.txt"));*/
+            .WriteTo.File("log.txt"));
 
 // Add services to the container.
 builder.Services.AddControllers();

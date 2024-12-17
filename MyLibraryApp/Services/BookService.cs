@@ -21,6 +21,7 @@ public class BookService : IBookService
         
         await _context.AddAsync(book);
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Successfully added the book");
     }
 
     public async Task DeleteAsync(Guid id)
@@ -29,15 +30,19 @@ public class BookService : IBookService
 
         if (book is null)
         {
+            _logger.LogInformation("Book is not found");
             throw new KeyNotFoundException("Book not found");
         }
 
         _context.Remove(book);
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Successfully deleted the book: {@Book}", book);
+
     }
 
     public async Task<Book> GetAsync(Guid id)
     {
+        _logger.LogInformation("Retrieved book by id: {@Guid}", id);
         return await _context.FindAsync<Book>(id);
     }
 
@@ -50,6 +55,7 @@ public class BookService : IBookService
     public async Task UpdateAsync(Book newBook)
     {
         var existingBook = await GetAsync(newBook.Id);
+        _logger.LogInformation("Update the reader: {@ExistingBook} to {@NewBook}", existingBook, newBook);
 
         existingBook.Title = newBook.Title;
         existingBook.Author = newBook.Author;
@@ -57,5 +63,6 @@ public class BookService : IBookService
         existingBook.PublicationYear = newBook.PublicationYear;
         
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Successfully updated");
     }
 }

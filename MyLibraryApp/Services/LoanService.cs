@@ -25,12 +25,14 @@ public class LoanService : ILoanService
 
         if (!readerExists || !bookExists)
         {
+            _logger.LogInformation("The book or the reader does not exist");
             throw new ArgumentNullException("Reader or Book cannot be null.");
         }
 
         // Loan hozzáadása
         await _context.AddAsync(loan);
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Successfully loan");
     }
 
     public async Task<List<Loan>> GetAllAsync()
@@ -43,6 +45,7 @@ public class LoanService : ILoanService
     
     public async Task<List<Loan>> GetLoansByReaderAsync(Guid readerId)
     {
+        _logger.LogInformation("Retrieving all loans by readerId: {@Guid}", readerId);
         return await _context.Loans
             .Where(l => l.ReaderId == readerId)
             .ToListAsync();
@@ -50,6 +53,7 @@ public class LoanService : ILoanService
 
     public async Task<List<Loan>> GetLoansByBookAsync(Guid bookId)
     {
+        _logger.LogInformation("Retrieving all loans by bookId: {@Guid}", bookId);
         return await _context.Loans
             .Where(l => l.BookId == bookId)
             .ToListAsync();
