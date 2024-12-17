@@ -29,7 +29,7 @@ public class BookService : IBookService
 
     public async Task DeleteAsync(Guid id)
     {
-        await _httpClient.DeleteAsync($"boooks/{id}");
+        await _httpClient.DeleteAsync($"books/{id}");
     }
 
     public async Task UpdateAsync(Book book)

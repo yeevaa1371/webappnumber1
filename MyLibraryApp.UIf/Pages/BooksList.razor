@@ -38,7 +38,7 @@
                     <button type="button" class="btn btn-light" @onclick="() => OpenBookForm(book)" data-bs-toggle="tooltip" title="Szerkesztés">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <button type="button" class="btn btn-danger" @onclick="() => OpenBookForm(book)" data-bs-toggle="tooltip" title="Törlés">
+                    <button type="button" class="btn btn-danger" @onclick="() => OpenDeleteDialog(book.Id)" data-bs-toggle="tooltip" title="Törlés">
                         <i class="bi bi-trash"></i>
                     </button>
                     <button type="button" class="btn btn-light" @onclick="() => OpenBookForm(book)" data-bs-toggle="tooltip" title="Kölcsönzés">
@@ -60,10 +60,18 @@
               OnClose="CloseBookForm" />
 }
 
+@if (_deleteBook)
+{
+    <DeleteForm EntityId="_selectedId" OnClose="CloseDeleteDialog" OnDelete="DeleteBook"></DeleteForm>
+}
+
 @code {
     private List<Book> _books;
     private Boolean _showBookForm = false;
     private Book? _selectedBook;
+    private Boolean _deleteBook = false;
+    private Guid _selectedId;
+
     protected override async Task OnInitializedAsync()
     {
         _books = await BookService.GetAllAsync();
@@ -72,7 +80,7 @@
     private void OpenBookForm(Book? book = null)
     {
         Console.WriteLine("Try to open BookForm");
-        _selectedBook = book ?? new Book() {Id = Guid.Empty};
+        _selectedBook = book ?? new Book() { Id = Guid.Empty };
         _showBookForm = true;
         //StateHasChanged();
         /*Console.WriteLine(_selectedBook.Publisher + _selectedBook.Id + _showBookForm);*/
@@ -80,18 +88,16 @@
 
     private async Task CloseBookForm()
     {
-        _books = await BookService.GetAllAsync();
         _showBookForm = false;
         _selectedBook = null;
-        //StateHasChanged();
+        _books = await BookService.GetAllAsync();
+        StateHasChanged();
     }
 
     private async Task UpdateBook(Book book)
     {
-        Console.WriteLine("UPDATE");
         try
         {
-            Console.WriteLine("EN VOLTAM");
             await BookService.UpdateAsync(book);
             StateHasChanged();
             await CloseBookForm();
@@ -104,10 +110,8 @@
 
     private async Task AddBook(Book book)
     {
-        Console.WriteLine("ADD");
         try
         {
-            Console.WriteLine("EN VOLTAM2");
             await BookService.AddAsync(book);
             StateHasChanged();
             await CloseBookForm();
@@ -117,4 +121,26 @@
             Console.WriteLine($"Hiba történt: {ex.Message}");
         }
     }
+
+    private void OpenDeleteDialog(Guid id)
+    {
+        _deleteBook = true;
+        _selectedId = id;
+        Console.WriteLine(id);
+    }
+
+    private async Task DeleteBook(Guid id)
+    {
+        Console.WriteLine(id);
+        await BookService.DeleteAsync(id);
+        _books = await BookService.GetAllAsync();
+        CloseDeleteDialog();
+    }
+
+    private void CloseDeleteDialog()
+    {
+        _selectedId = Guid.Empty;
+        _deleteBook = false;
+    }
+
 }

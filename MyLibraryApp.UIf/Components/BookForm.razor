@@ -3,7 +3,6 @@
 
 <EditForm Model="Book" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
-    
     <div class="modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -52,13 +51,11 @@
     
     private async Task OnValidSubmit()
     {
-        Console.WriteLine("Change");
         await OnSubmit.InvokeAsync(Book);
     }
     
     private async Task CloseDialog()
     {
-        Console.WriteLine("NO CHANGE");
         await OnClose.InvokeAsync();
     }
     
