@@ -8,5 +8,6 @@ public interface ILoanService
 
     public Task AddAsync(Book book, Reader reader);
 
-    public Task<LoanWithDetails> GetAsync(Guid readerId);
+    public Task<List<LoanWithDetails>> GetByReaderAsync(Guid readerId);
+    public Task<List<LoanWithDetails>> GetByBookAsync(Guid bookId);
 }

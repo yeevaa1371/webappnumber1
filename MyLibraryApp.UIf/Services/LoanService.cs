@@ -22,8 +22,14 @@ public class LoanService : ILoanService
         throw new NotImplementedException();
     }
 
-    public Task<LoanWithDetails> GetAsync(Guid readerId)
+    public async Task<List<LoanWithDetails>> GetByReaderAsync(Guid readerId)
     {
-        throw new NotImplementedException();
+        return await _httpClient.GetFromJsonAsync<List<LoanWithDetails>>($"/loan/reader/{readerId}");
     }
+
+    public async Task<List<LoanWithDetails>> GetByBookAsync(Guid bookId)
+    {
+        return await _httpClient.GetFromJsonAsync<List<LoanWithDetails>>($"/loan/book/{bookId}");
+    }
+
 }

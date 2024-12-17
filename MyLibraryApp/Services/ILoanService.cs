@@ -9,5 +9,6 @@ public interface ILoanService
     Task<List<Loan>> GetAllAsync();
     
     Task<List<Loan>> GetLoansByReaderAsync(Guid readerId);
+    Task<List<Loan>> GetLoansByBookAsync(Guid BookId);
     
 }

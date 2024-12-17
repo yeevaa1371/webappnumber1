@@ -47,4 +47,11 @@ public class LoanService : ILoanService
             .Where(l => l.ReaderId == readerId)
             .ToListAsync();
     }
+
+    public async Task<List<Loan>> GetLoansByBookAsync(Guid BookId)
+    {
+        return await _context.Loans
+            .Where(l => l.BookId == BookId)
+            .ToListAsync();
+    }
 }

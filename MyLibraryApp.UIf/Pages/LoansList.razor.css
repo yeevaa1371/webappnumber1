@@ -3,9 +3,23 @@ div{
 }
 .form-control {
     /*margin-bottom: 15px;*/
-    width: 25%;
+    width: 35%;
 }
 .loans-search{
     display: flex;
     align-items: center;
+    gap: 10px;
+}
+.search-input, .search-select, .search-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.search-select{
+    flex: 0 0 180px; /* Fix szélesség a legördülő listának */
+    cursor: pointer;
 }

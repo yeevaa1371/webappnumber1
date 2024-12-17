@@ -102,4 +102,35 @@ public class LoanController : ControllerBase
         return Ok(loanswd);
     }
     
+    [HttpGet("book/{bookId:guid}")]
+    public async Task<ActionResult<List<LoanWithDetails>>> GetLoansByBook(Guid bookId)
+    {
+        var loans = await _loanService.GetLoansByBookAsync(bookId);
+        var loanswd = new List<LoanWithDetails>();
+        
+        if (loans.Count == 0)
+        {
+            return NotFound("No loans found for the specified reader.");
+        }
+        
+        foreach (var loan in loans)
+        {
+            var book = await _bookService.GetAsync(loan.BookId);
+            var reader = await _readerService.GetAsync(loan.ReaderId);
+
+            loanswd.Add(new LoanWithDetails()
+            {
+                LoanId = loan.Id,
+                ReaderId = loan.ReaderId,
+                Reader = reader.Name,
+                BookId = loan.BookId,
+                Book = book.Title + ", " + book.Author + ", " + book.Publisher + ", " + book.PublicationYear.ToString(),
+                LoanDate = loan.LoanDate,
+                ReturnDate = loan.ReturnDate
+            });
+        }
+        
+        return Ok(loanswd);
+    }
+    
 }

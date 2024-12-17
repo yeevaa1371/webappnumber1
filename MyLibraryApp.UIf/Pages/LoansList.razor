@@ -5,12 +5,19 @@
 
 <h3>Loans</h3>
 <div>
-    <a href="" class="btn btn-light">
+    <button type="button" class="btn btn-light">
         <i class="bi bi-inbox"></i> Kölcsönzés
-    </a>
+    </button>
 </div>
 <div class="mb-3 loans-search">
-    <input type="text" class="form-control" @bind="SearchTerm" @bind:event="oninput" placeholder="Keresés név vagy olvasószám alapján..." />
+    <input type="text" class="form-control search-input" @bind="_searchTerm" @oninput="CheckIfEmpty" placeholder="Keresés..." />
+    <select @bind="_filterType" class="form-select search-select">
+        <option value="Reader">Olvasószám alapján </option>
+        <option value="Book">Leltáriszám alapján</option>
+    </select>
+    <button type="button" class="btn btn-light" @onclick="() => SearchInLoans(_searchTerm)">
+        <i class="bi bi-search"></i> Keresés
+    </button>
 </div>
 
 
@@ -44,12 +51,55 @@
 }
 
 @code {
-    private string SearchTerm = "";
+    private string _searchTerm = string.Empty;
     private List<LoanWithDetails> _loans;
+    private string _filterType = "Reader";
+    private List<LoanWithDetails> _allLoans;
     
     protected override async Task OnInitializedAsync()
     {
         _loans = await LoanService.GetAllAsync();
+        _allLoans = _loans;
+    }
+
+    private void CheckIfEmpty()
+    {
+        _loans = _allLoans; 
+        StateHasChanged();
+        
+    }
+    
+    private async Task SearchInLoans(string search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            return; // Ne csináljon semmit, ha üres a beviteli mező
+        }
+        
+        Guid searchId = Guid.Parse(search);
+        
+        switch (_filterType)
+        {
+            case "Reader":
+                await SearchByReaderId(searchId);
+                break;
+            case "Book":
+                await SearchByBookId(searchId);
+                break;
+            default:
+                Console.WriteLine("Érvénytelen keresési típus.");
+                break;
+        }
+    }
+
+    private async Task SearchByReaderId(Guid readerId)
+    {
+        _loans = await LoanService.GetByReaderAsync(readerId);
+    }
+
+    private async Task SearchByBookId(Guid bookId)
+    {
+        _loans = await LoanService.GetByBookAsync(bookId);
     }
 
 }
