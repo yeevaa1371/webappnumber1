@@ -34,6 +34,13 @@ public class LoanController : ControllerBase
         {
             return NotFound($"Book with ID {loan.BookId} not found.");
         }
+
+        var isLoaned = await _loanService.IsBookCurrentlyLoanedAsync(loan.BookId, loan.LoanDate);
+        
+        if (isLoaned)
+        {
+            return Conflict();
+        }
         
         await _loanService.AddAsync(loan);
 

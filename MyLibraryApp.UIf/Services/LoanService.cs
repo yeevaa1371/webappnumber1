@@ -17,9 +17,9 @@ public class LoanService : ILoanService
         return await _httpClient.GetFromJsonAsync<List<LoanWithDetails>>("loan");
     }
 
-    public Task AddAsync(Book book, Reader reader)
+    public Task AddAsync(Loan loan)
     {
-        throw new NotImplementedException();
+        return _httpClient.PostAsJsonAsync("loan", loan);
     }
 
     public async Task<List<LoanWithDetails>> GetByReaderAsync(Guid readerId)

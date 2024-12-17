@@ -1,11 +1,12 @@
 @page "/LoansList"
 @using MyLibraryApp.Shared
 @using MyLibraryApp.UIf.Services
+@using MyLibraryApp.UIf.Components
 @inject ILoanService LoanService
 
 <h3>Loans</h3>
 <div>
-    <button type="button" class="btn btn-light">
+    <button type="button" class="btn btn-light" @onclick="ShowLoanBook">
         <i class="bi bi-inbox"></i> Kölcsönzés
     </button>
 </div>
@@ -50,11 +51,18 @@
     </table>
 }
 
+@if (_showLoanBook)
+{
+    Console.WriteLine("IF");
+    <LoanForm OnSubmit="LoanBook" OnClose="CloseLoanBook"/>
+}
+
 @code {
     private string _searchTerm = string.Empty;
     private List<LoanWithDetails> _loans;
     private string _filterType = "Reader";
     private List<LoanWithDetails> _allLoans;
+    private Boolean _showLoanBook = false;
     
     protected override async Task OnInitializedAsync()
     {
@@ -102,4 +110,29 @@
         _loans = await LoanService.GetByBookAsync(bookId);
     }
 
+
+    private void ShowLoanBook()
+    {
+        _showLoanBook = true;
+    }
+
+    private async Task LoanBook(Loan loan)
+    {
+        try
+        {
+            await LoanService.AddAsync(loan);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Failed to loan the book: {e.Message}");
+            throw;
+        }
+    }
+
+    private async Task CloseLoanBook()
+    {
+        _allLoans = await LoanService.GetAllAsync();
+        _loans = _allLoans;
+        _showLoanBook = false;
+    }
 }

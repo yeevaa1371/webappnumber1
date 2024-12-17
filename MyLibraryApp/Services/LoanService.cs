@@ -40,7 +40,7 @@ public class LoanService : ILoanService
         return await _context.Loans
             .ToListAsync();
     }
-
+    
     public async Task<List<Loan>> GetLoansByReaderAsync(Guid readerId)
     {
         return await _context.Loans
@@ -48,10 +48,19 @@ public class LoanService : ILoanService
             .ToListAsync();
     }
 
-    public async Task<List<Loan>> GetLoansByBookAsync(Guid BookId)
+    public async Task<List<Loan>> GetLoansByBookAsync(Guid bookId)
     {
         return await _context.Loans
-            .Where(l => l.BookId == BookId)
+            .Where(l => l.BookId == bookId)
             .ToListAsync();
     }
+    
+    public async Task<Boolean> IsBookCurrentlyLoanedAsync(Guid bookId, DateTime loanDate)
+    {
+        var existingLoan = await _context.Loans
+            .FirstOrDefaultAsync(loan => loan.BookId == bookId 
+                                         && loan.ReturnDate >= loanDate);
+        return existingLoan != null; // igaz, ha a könyv még ki van kölcsönözve
+    }
+
 }

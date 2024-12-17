@@ -1,4 +1,68 @@
+@using MyLibraryApp.Shared
+@inherits ComponentBase
+
+<EditForm Model="Loan" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+    
+    <div class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@DialogTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDialog"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="bookId" class="form-label">Könyv leltári száma:</label>
+                        <input type="text" id="bookId" class="form-control" @bind="Loan.BookId" />
+                        <ValidationMessage For="() => Loan.BookId" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="readerId" class="form-label">Olvasó olvasószáma:</label>
+                        <input type="text" id="readerId" class="form-control" @bind="Loan.ReaderId" />
+                        <ValidationMessage For="() => Loan.ReaderId" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kölcsönzés időpontja:</label>
+                        <input type="datetime-local" class="form-control" @bind="Loan.LoanDate" />
+                        <ValidationMessage For="() => Loan.LoanDate" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Visszahozás időpontja:</label>
+                        <input type="datetime-local" class="form-control" @bind="Loan.ReturnDate" />
+                        <ValidationMessage For="() => Loan.ReturnDate" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CloseDialog">Mégse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</EditForm>
 
 @code {
+    [Parameter] public Loan Loan { get; set; } = new Loan() {BookId = Guid.Empty,ReaderId = Guid.Empty, LoanDate = DateTime.Now, ReturnDate = DateTime.Today.AddDays(14)};
+    [Parameter] public EventCallback<Loan> OnSubmit { get; set; }
+    [Parameter] public string DialogTitle { get; set; } = "Könyv kölcsönzése";
+    [Parameter] public string SubmitButtonText { get; set; } = "Kölcsönzés";
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("FORM");
+    }
+
+    private async Task OnValidSubmit()
+    {
+        await OnSubmit.InvokeAsync(Loan);
+    }
     
+    private async Task CloseDialog()
+    {
+        await OnClose.InvokeAsync();
+    }
 }
